@@ -5,7 +5,6 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from pathlib import Path
 
-
 METRIC_FIELDS = [
     "timestamp",
     "cpu_percent",
