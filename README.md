@@ -4,7 +4,7 @@ Lightweight Windows health monitor for diagnosing freezes, throttling, disk acti
 
 ## Status
 
-Early local version. Windows-only.
+Early development. Windows-only.
 
 ## Features
 
@@ -24,7 +24,7 @@ python -m omp_windows_health_monitor once
 python -m omp_windows_health_monitor monitor --interval 10 --output-dir .\monitor-logs --retention-days 3
 ```
 
-After packaging, the intended command is:
+After installing the package, the command is:
 
 ```powershell
 omp-windows-health-monitor once
@@ -43,6 +43,7 @@ events-YYYYMMDD-HH.log
 ## Development
 
 ```powershell
+python -m pip install -e .
 python -m pytest
 python -m ruff check .
 ```
