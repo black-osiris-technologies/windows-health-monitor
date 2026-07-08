@@ -10,3 +10,6 @@ dist/
 *.egg-info/
 monitor-logs/
 *.log
+
+# JetBrains IDEs
+.idea/
