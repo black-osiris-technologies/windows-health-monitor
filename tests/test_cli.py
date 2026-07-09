@@ -11,3 +11,11 @@ def test_monitor_defaults_parse() -> None:
     assert args.command == "monitor"
     assert args.interval == 10
     assert args.retention_days == 3
+    assert args.email_thresholds == "70,80,90"
+
+
+def test_test_email_command_parses() -> None:
+    args = build_parser().parse_args(["test-email", "--email-to", "person@example.com"])
+    assert args.command == "test-email"
+    assert args.email_to == "person@example.com"
+

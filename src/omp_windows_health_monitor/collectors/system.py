@@ -62,13 +62,26 @@ def collect_cpu_percent(sample_seconds: float = 0.25) -> float:
     return round((1.0 - idle_delta / total_delta) * 100.0, 2)
 
 
-def collect_available_memory_mb() -> int:
+def collect_memory() -> dict[str, int | float]:
     status = MEMORYSTATUSEX()
     status.dwLength = ctypes.sizeof(MEMORYSTATUSEX)
     ok = ctypes.windll.kernel32.GlobalMemoryStatusEx(ctypes.byref(status))
     if not ok:
         raise OSError("GlobalMemoryStatusEx failed")
-    return round(status.ullAvailPhys / 1024 / 1024)
+    total_mb = round(status.ullTotalPhys / 1024 / 1024)
+    available_mb = round(status.ullAvailPhys / 1024 / 1024)
+    used_percent = 0.0
+    if total_mb > 0:
+        used_percent = round((1.0 - available_mb / total_mb) * 100.0, 2)
+    return {
+        "available_mb": available_mb,
+        "total_memory_mb": total_mb,
+        "memory_used_percent": used_percent,
+    }
+
+
+def collect_available_memory_mb() -> int:
+    return int(collect_memory()["available_mb"])
 
 
 def collect_disk_io_mbps() -> dict[str, float | None]:
@@ -95,3 +108,4 @@ def collect_disk_io_mbps() -> dict[str, float | None]:
         "disk_read_mbps": round(values[0] / 1024 / 1024, 2),
         "disk_write_mbps": round(values[1] / 1024 / 1024, 2),
     }
+

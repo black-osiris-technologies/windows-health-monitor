@@ -9,11 +9,15 @@ METRIC_FIELDS = [
     "timestamp",
     "cpu_percent",
     "available_mb",
+    "total_memory_mb",
+    "memory_used_percent",
     "disk_read_mbps",
     "disk_write_mbps",
     "gpu_temp_c",
     "gpu_util_percent",
     "gpu_memory_used_mb",
+    "gpu_memory_total_mb",
+    "gpu_memory_used_percent",
 ]
 
 
@@ -67,3 +71,4 @@ def cleanup_old_logs(output_dir: Path, retention_days: int, now: datetime | None
         modified = datetime.fromtimestamp(path.stat().st_mtime)
         if modified < cutoff:
             path.unlink()
+
