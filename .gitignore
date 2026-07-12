@@ -2,6 +2,7 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 .ruff_cache/
+.tmp/
 .mypy_cache/
 .venv/
 venv/
@@ -10,3 +11,6 @@ dist/
 *.egg-info/
 monitor-logs/
 *.log
+
+# JetBrains IDEs
+.idea/
