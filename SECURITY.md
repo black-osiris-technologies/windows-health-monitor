@@ -1,7 +1,15 @@
-# Security
+# Security Policy
 
-Do not include secrets, personal tokens, private logs, or machine-specific sensitive data in issues or pull requests.
+## Supported Versions
 
-This tool may collect process names, event log messages, and local machine health data. Review logs before sharing them publicly.
+Security fixes are applied to the latest published release. Pre-1.0 fixes may be delivered through a newer minor release.
 
-To report a security issue, contact the repository owner privately.
+## Reporting a Vulnerability
+
+Do not open a public issue for suspected vulnerabilities. Use [GitHub private vulnerability reporting](https://github.com/black-osiris-technologies/windows-health-monitor/security/advisories/new).
+
+Include the affected version, reproduction steps, impact, and a suggested mitigation when available. Remove SMTP credentials, personal addresses, hostnames, process details, and private Windows event data.
+
+## Data Sensitivity
+
+The monitor can collect process names, host information, system metrics, and Windows event messages. Logs remain local unless the operator shares them or enables email delivery. Contributors must preserve local-only defaults and avoid introducing required telemetry or remote storage.

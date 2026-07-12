@@ -1,4 +1,4 @@
-from omp_windows_health_monitor.collectors.gpu import parse_nvidia_smi_csv
+from windows_health_monitor.collectors.gpu import parse_nvidia_smi_csv
 
 
 def test_parse_nvidia_smi_csv() -> None:
@@ -14,4 +14,3 @@ def test_parse_nvidia_smi_csv() -> None:
 def test_parse_nvidia_smi_csv_rejects_invalid_output() -> None:
     assert parse_nvidia_smi_csv("") is None
     assert parse_nvidia_smi_csv("not,a,number") is None
-
