@@ -4,6 +4,8 @@ All notable changes are documented here using [Keep a Changelog](https://keepach
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-07-12
+
 ### Changed
 
 - Renamed the project and Python package from `omp-windows-health-monitor` to `windows-health-monitor`.
@@ -19,5 +21,6 @@ All notable changes are documented here using [Keep a Changelog](https://keepach
 - Windows System event collection.
 - Optional daily-deduplicated email alerts.
 
-[Unreleased]: https://github.com/black-osiris-technologies/windows-health-monitor/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/black-osiris-technologies/windows-health-monitor/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/black-osiris-technologies/windows-health-monitor/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/black-osiris-technologies/windows-health-monitor/releases/tag/v0.1.0
