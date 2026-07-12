@@ -71,4 +71,3 @@ def cleanup_old_logs(output_dir: Path, retention_days: int, now: datetime | None
         modified = datetime.fromtimestamp(path.stat().st_mtime)
         if modified < cutoff:
             path.unlink()
-

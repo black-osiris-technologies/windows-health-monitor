@@ -108,4 +108,3 @@ def collect_disk_io_mbps() -> dict[str, float | None]:
         "disk_read_mbps": round(values[0] / 1024 / 1024, 2),
         "disk_write_mbps": round(values[1] / 1024 / 1024, 2),
     }
-

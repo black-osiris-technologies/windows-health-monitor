@@ -11,7 +11,7 @@ from .monitor import collect_sample, run_monitor
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="omp-windows-health-monitor",
+        prog="windows-health-monitor",
         description="Lightweight Windows health monitor.",
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -61,8 +61,8 @@ def main(argv: list[str] | None = None) -> int:
         alert_config = build_alert_config(args.email_to, args.email_thresholds, state_file)
         if alert_config is None:
             parser.error(
-                "email is not configured; set --email-to or OMP_HEALTH_EMAIL_TO plus "
-                "OMP_HEALTH_SMTP_HOST and OMP_HEALTH_EMAIL_FROM/OMP_HEALTH_SMTP_USER"
+                "email is not configured; set --email-to or WHM_EMAIL_TO plus "
+                "WHM_SMTP_HOST and WHM_EMAIL_FROM/WHM_SMTP_USER"
             )
         alert = Alert(metric="test", label="Test alert", value=100.0, threshold=100)
         message = build_alert_message(alert, alert_config.email_to, datetime.now())
@@ -72,4 +72,3 @@ def main(argv: list[str] | None = None) -> int:
 
     parser.error(f"Unknown command: {args.command}")
     return 2
-

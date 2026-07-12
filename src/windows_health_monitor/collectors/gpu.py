@@ -62,4 +62,3 @@ def collect_nvidia_gpu() -> dict[str, int | None]:
             "gpu_memory_used_percent": None,
         }
     return parsed
-

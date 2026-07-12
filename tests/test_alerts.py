@@ -2,11 +2,12 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from omp_windows_health_monitor.alerts import (
+from windows_health_monitor.alerts import (
     AlertState,
     collect_alerts,
     parse_thresholds,
     send_alerts_for_sample,
+    smtp_config_from_env,
 )
 
 
@@ -28,7 +29,7 @@ def test_send_alerts_only_once_per_metric_per_day(tmp_path, monkeypatch) -> None
     def fake_send_email(_config, message):
         sent.append(message)
 
-    monkeypatch.setattr("omp_windows_health_monitor.alerts.send_email", fake_send_email)
+    monkeypatch.setattr("windows_health_monitor.alerts.send_email", fake_send_email)
 
     config = type(
         "Config",
@@ -50,3 +51,27 @@ def test_send_alerts_only_once_per_metric_per_day(tmp_path, monkeypatch) -> None
     assert second == []
     assert len(sent) == 1
 
+
+def test_smtp_config_uses_current_environment_names(monkeypatch) -> None:
+    monkeypatch.setenv("WHM_SMTP_HOST", "smtp.example.com")
+    monkeypatch.setenv("WHM_EMAIL_FROM", "monitor@example.com")
+
+    config = smtp_config_from_env()
+
+    assert config is not None
+    assert config.host == "smtp.example.com"
+    assert config.sender == "monitor@example.com"
+
+
+def test_smtp_config_supports_legacy_environment_names(monkeypatch) -> None:
+    monkeypatch.delenv("WHM_SMTP_HOST", raising=False)
+    monkeypatch.delenv("WHM_EMAIL_FROM", raising=False)
+    monkeypatch.delenv("WHM_SMTP_USER", raising=False)
+    monkeypatch.setenv("OMP_HEALTH_SMTP_HOST", "legacy.example.com")
+    monkeypatch.setenv("OMP_HEALTH_EMAIL_FROM", "legacy@example.com")
+
+    config = smtp_config_from_env()
+
+    assert config is not None
+    assert config.host == "legacy.example.com"
+    assert config.sender == "legacy@example.com"

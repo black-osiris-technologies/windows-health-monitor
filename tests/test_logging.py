@@ -3,7 +3,7 @@ from __future__ import annotations
 import os
 from datetime import datetime, timedelta
 
-from omp_windows_health_monitor.logging import cleanup_old_logs, hourly_log_paths
+from windows_health_monitor.logging import cleanup_old_logs, hourly_log_paths
 
 
 def test_hourly_log_paths(tmp_path) -> None:
