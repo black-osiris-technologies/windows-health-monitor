@@ -17,6 +17,11 @@ PERCENT_METRICS = {
 }
 
 
+def _env(name: str) -> str | None:
+    """Read the current variable name, then the pre-rename compatibility alias."""
+    return os.getenv(f"WHM_{name}") or os.getenv(f"OMP_HEALTH_{name}")
+
+
 @dataclass(frozen=True)
 class SmtpConfig:
     host: str
@@ -84,17 +89,17 @@ def parse_thresholds(value: str) -> tuple[int, ...]:
 
 
 def smtp_config_from_env() -> SmtpConfig | None:
-    host = os.getenv("OMP_HEALTH_SMTP_HOST")
-    sender = os.getenv("OMP_HEALTH_EMAIL_FROM") or os.getenv("OMP_HEALTH_SMTP_USER")
+    host = _env("SMTP_HOST")
+    sender = _env("EMAIL_FROM") or _env("SMTP_USER")
     if not host or not sender:
         return None
     return SmtpConfig(
         host=host,
-        port=int(os.getenv("OMP_HEALTH_SMTP_PORT", "587")),
-        username=os.getenv("OMP_HEALTH_SMTP_USER"),
-        password=os.getenv("OMP_HEALTH_SMTP_PASSWORD"),
+        port=int(_env("SMTP_PORT") or "587"),
+        username=_env("SMTP_USER"),
+        password=_env("SMTP_PASSWORD"),
         sender=sender,
-        use_tls=os.getenv("OMP_HEALTH_SMTP_TLS", "true").lower() != "false",
+        use_tls=(_env("SMTP_TLS") or "true").lower() != "false",
     )
 
 
@@ -103,7 +108,7 @@ def build_alert_config(
     thresholds: str,
     state_file: Path,
 ) -> AlertConfig | None:
-    recipient = email_to or os.getenv("OMP_HEALTH_EMAIL_TO")
+    recipient = email_to or _env("EMAIL_TO")
     smtp = smtp_config_from_env()
     if not recipient or smtp is None:
         return None
@@ -148,7 +153,7 @@ def send_alerts_for_sample(
 def build_alert_message(alert: Alert, recipient: str, now: datetime) -> EmailMessage:
     message = EmailMessage()
     message["To"] = recipient
-    message["Subject"] = f"[omp-health] {alert.label} over {alert.threshold}%"
+    message["Subject"] = f"[windows-health] {alert.label} over {alert.threshold}%"
     message.set_content(
         "\n".join(
             [
@@ -170,4 +175,3 @@ def send_email(config: SmtpConfig, message: EmailMessage) -> None:
         if config.username and config.password:
             smtp.login(config.username, config.password)
         smtp.send_message(message)
-
