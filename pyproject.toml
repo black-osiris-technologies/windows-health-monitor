@@ -3,19 +3,27 @@ requires = ["setuptools>=69", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "omp-windows-health-monitor"
-version = "0.1.0"
+name = "windows-health-monitor"
+version = "0.2.0"
 description = "Lightweight Windows health monitor for diagnosing freezes, throttling, disk activity, GPU issues, and system events."
 readme = "README.md"
 requires-python = ">=3.11"
-license = { text = "MIT" }
+license = "MIT"
+license-files = ["LICENSE"]
 authors = [
   { name = "Black Osiris Technologies" }
 ]
 dependencies = []
 
+[project.optional-dependencies]
+dev = [
+  "build>=1.2",
+  "pytest>=8",
+  "ruff>=0.9"
+]
+
 [project.scripts]
-omp-windows-health-monitor = "omp_windows_health_monitor.cli:main"
+windows-health-monitor = "windows_health_monitor.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

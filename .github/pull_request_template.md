@@ -1,8 +1,19 @@
 ## Summary
 
-## Verification
+<!-- What changed and why? -->
+
+## Privacy and Performance Impact
+
+<!-- Describe new data collection, remote communication, permissions, or sampling overhead. -->
+
+## Validation
 
 - [ ] `python -m pytest`
 - [ ] `python -m ruff check .`
+- [ ] `python -m build`
+- [ ] Documentation updated when behavior or configuration changed
+- [ ] No credentials, hostnames, personal data, or private event logs included
 
-## Notes
+## Related Work
+
+<!-- Linear/GitHub issue, for example OSIRIS-123 or Closes #123. -->
