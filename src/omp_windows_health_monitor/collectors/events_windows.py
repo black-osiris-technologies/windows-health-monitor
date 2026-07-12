@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import subprocess
 
-
-DEFAULT_EVENT_PATTERN = "nvlddmkm|Display|Kernel-Power|Kernel-Processor-Power|disk|Ntfs|USB|stor|WHEA"
+DEFAULT_EVENT_PATTERN = (
+    "nvlddmkm|Display|Kernel-Power|Kernel-Processor-Power|"
+    "disk|Ntfs|USB|stor|WHEA"
+)
 
 
 def collect_recent_system_events(seconds: int, pattern: str = DEFAULT_EVENT_PATTERN) -> list[str]:
