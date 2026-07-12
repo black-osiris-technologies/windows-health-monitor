@@ -1,4 +1,4 @@
-from omp_windows_health_monitor.cli import build_parser
+from windows_health_monitor.cli import build_parser
 
 
 def test_once_command_parses() -> None:
@@ -18,4 +18,3 @@ def test_test_email_command_parses() -> None:
     args = build_parser().parse_args(["test-email", "--email-to", "person@example.com"])
     assert args.command == "test-email"
     assert args.email_to == "person@example.com"
-
