@@ -16,4 +16,4 @@
 
 ## Related Work
 
-<!-- Linear/GitHub issue, for example OSIRIS-123 or Closes #123. -->
+<!-- Public GitHub issue, for example Closes #123. -->

@@ -10,7 +10,11 @@ def test_monitor_defaults_parse() -> None:
     args = build_parser().parse_args(["monitor"])
     assert args.command == "monitor"
     assert args.interval == 10
+    assert args.gpu_interval is None
     assert args.retention_days == 3
+    assert args.startup_lookback_hours == 24
+    assert args.crash_dump_archive_dir is None
+    assert args.crash_dump_retention == 2
     assert args.email_thresholds == "70,80,90"
 
 

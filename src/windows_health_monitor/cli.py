@@ -20,8 +20,38 @@ def build_parser() -> argparse.ArgumentParser:
 
     monitor = subparsers.add_parser("monitor", help="Continuously write hourly logs.")
     monitor.add_argument("--interval", type=int, default=10, help="Sampling interval in seconds.")
+    monitor.add_argument(
+        "--gpu-interval",
+        type=int,
+        default=None,
+        help="GPU sampling interval in seconds. Defaults to the main sampling interval.",
+    )
     monitor.add_argument("--output-dir", type=Path, default=Path("monitor-logs"))
     monitor.add_argument("--retention-days", type=int, default=3)
+    monitor.add_argument(
+        "--startup-lookback-hours",
+        type=int,
+        default=24,
+        help="System event history captured when no durable event cursor exists.",
+    )
+    monitor.add_argument(
+        "--status-file",
+        type=Path,
+        default=None,
+        help="Heartbeat/status JSON path. Defaults to <output-dir>/status.json.",
+    )
+    monitor.add_argument(
+        "--crash-dump-archive-dir",
+        type=Path,
+        default=None,
+        help="Optional directory that preserves MEMORY.DMP across later crashes.",
+    )
+    monitor.add_argument(
+        "--crash-dump-retention",
+        type=int,
+        default=2,
+        help="Number of archived MEMORY.DMP files to retain when archiving is enabled.",
+    )
     monitor.add_argument("--email-to", default=None, help="Alert recipient email address.")
     monitor.add_argument(
         "--email-thresholds",
@@ -53,7 +83,17 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "monitor":
         state_file = args.email_state_file or args.output_dir / "email-alert-state.json"
         alert_config = build_alert_config(args.email_to, args.email_thresholds, state_file)
-        run_monitor(args.output_dir, args.interval, args.retention_days, alert_config)
+        run_monitor(
+            args.output_dir,
+            args.interval,
+            args.retention_days,
+            alert_config,
+            gpu_interval_seconds=args.gpu_interval,
+            startup_lookback_seconds=args.startup_lookback_hours * 60 * 60,
+            status_file=args.status_file,
+            crash_dump_archive_dir=args.crash_dump_archive_dir,
+            crash_dump_retention=args.crash_dump_retention,
+        )
         return 0
 
     if args.command == "test-email":
