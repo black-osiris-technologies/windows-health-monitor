@@ -4,6 +4,11 @@ All notable changes are documented here using [Keep a Changelog](https://keepach
 
 ## [Unreleased]
 
+### Fixed
+
+- The elevated background installer now displays live, numbered progress messages instead of
+  appearing idle until completion.
+
 ## [0.3.0] - 2026-08-28
 
 ### Added

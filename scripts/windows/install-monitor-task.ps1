@@ -16,6 +16,16 @@ param(
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
+function Write-InstallProgress {
+    param(
+        [int]$Step,
+        [int]$Total,
+        [string]$Message
+    )
+
+    Write-Host "[$Step/$Total] $Message"
+}
+
 function Assert-Administrator {
     $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
     $principal = [Security.Principal.WindowsPrincipal]::new($identity)
@@ -51,6 +61,7 @@ function Protect-InstallDirectory {
     Set-Acl -LiteralPath $Path -AclObject $acl
 }
 
+Write-InstallProgress -Step 1 -Total 6 -Message 'Validating administrator access and settings...'
 Assert-Administrator
 
 if ($IntervalSeconds -lt 10) {
@@ -82,6 +93,7 @@ if (-not $PSCmdlet.ShouldProcess($TaskName, "Install and start background monito
     return
 }
 
+Write-InstallProgress -Step 2 -Total 6 -Message 'Preparing the protected runtime...'
 New-Item -ItemType Directory -Path $InstallDir -Force | Out-Null
 Protect-InstallDirectory -Path $InstallDir
 
@@ -103,6 +115,7 @@ $sourcePackage = Join-Path $repoRoot 'src\windows_health_monitor'
 $installedPackage = Join-Path $sitePackages 'windows_health_monitor'
 $stagedPackage = Join-Path $sitePackages 'windows_health_monitor.new'
 $backupPackage = Join-Path $sitePackages 'windows_health_monitor.previous'
+Write-InstallProgress -Step 3 -Total 6 -Message 'Staging the monitor package...'
 foreach ($path in @($stagedPackage, $backupPackage)) {
     if (Test-Path -LiteralPath $path) {
         Remove-Item -LiteralPath $path -Recurse -Force
@@ -113,6 +126,7 @@ Get-ChildItem -LiteralPath $stagedPackage -Directory -Filter '__pycache__' -Recu
     Remove-Item -Recurse -Force
 
 $existingTask = Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue
+Write-InstallProgress -Step 4 -Total 6 -Message 'Replacing the existing monitor package...'
 if ($null -ne $existingTask -and $existingTask.State -eq 'Running') {
     Stop-ScheduledTask -TaskName $TaskName
     $stopDeadline = (Get-Date).AddSeconds(30)
@@ -191,6 +205,7 @@ $settings = New-ScheduledTaskSettingsSet `
     -MultipleInstances IgnoreNew `
     -Priority 7
 
+Write-InstallProgress -Step 5 -Total 6 -Message 'Registering and starting the Scheduled Task...'
 Register-ScheduledTask `
     -TaskName $TaskName `
     -Action $action `
@@ -201,6 +216,7 @@ Register-ScheduledTask `
     -Force | Out-Null
 Start-ScheduledTask -TaskName $TaskName
 
+Write-InstallProgress -Step 6 -Total 6 -Message 'Verifying the Scheduled Task state...'
 $startDeadline = (Get-Date).AddSeconds(10)
 do {
     Start-Sleep -Milliseconds 250
@@ -210,6 +226,8 @@ if ($startedTask.State -ne 'Running') {
     $lastResult = (Get-ScheduledTaskInfo -TaskName $TaskName).LastTaskResult
     throw "Scheduled task did not start (state=$($startedTask.State), result=$lastResult)."
 }
+
+Write-Host 'Installation completed successfully.'
 
 [pscustomobject]@{
     TaskName = $TaskName
