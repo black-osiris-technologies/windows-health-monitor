@@ -1,3 +1,4 @@
 @echo off
-cd /d C:\Users\madal\Documents\Codex\2026-07-08\daca-iti-dau-comenzi-de-aici
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\monitor-system.ps1 -IntervalSeconds 10 -OutputDir .\monitor-logs -RetentionDays 3
+setlocal
+cd /d "%~dp0\..\.."
+python -m windows_health_monitor monitor --interval 60 --gpu-interval 300 --output-dir monitor-logs --retention-days 30
