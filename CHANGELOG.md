@@ -4,6 +4,13 @@ All notable changes are documented here using [Keep a Changelog](https://keepach
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-08-28
+
+### Fixed
+
+- The elevated background installer now displays live, numbered progress messages instead of
+  appearing idle until completion.
+
 ## [0.3.0] - 2026-08-28
 
 ### Added
@@ -42,7 +49,8 @@ All notable changes are documented here using [Keep a Changelog](https://keepach
 - Windows System event collection.
 - Optional daily-deduplicated email alerts.
 
-[Unreleased]: https://github.com/black-osiris-technologies/windows-health-monitor/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/black-osiris-technologies/windows-health-monitor/compare/v0.3.1...HEAD
+[0.3.1]: https://github.com/black-osiris-technologies/windows-health-monitor/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/black-osiris-technologies/windows-health-monitor/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/black-osiris-technologies/windows-health-monitor/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/black-osiris-technologies/windows-health-monitor/releases/tag/v0.1.0
