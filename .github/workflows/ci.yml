@@ -19,7 +19,7 @@ jobs:
         python-version: ["3.11", "3.12", "3.13"]
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
@@ -27,3 +27,26 @@ jobs:
       - run: python -m pytest
       - run: python -m ruff check .
       - run: python -m build
+
+  powershell:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Parse Windows PowerShell scripts
+        shell: powershell
+        run: |
+          $parseFailed = $false
+          Get-ChildItem -LiteralPath scripts\windows -Filter *.ps1 | ForEach-Object {
+            $tokens = $null
+            $parseIssues = $null
+            [void][System.Management.Automation.Language.Parser]::ParseFile(
+              $_.FullName,
+              [ref]$tokens,
+              [ref]$parseIssues
+            )
+            foreach ($issue in $parseIssues) {
+              Write-Error "$($_.Name):$($issue.Extent.StartLineNumber): $($issue.Message)"
+              $parseFailed = $true
+            }
+          }
+          if ($parseFailed) { exit 1 }

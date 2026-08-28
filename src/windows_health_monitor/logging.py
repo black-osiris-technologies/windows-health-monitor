@@ -13,6 +13,7 @@ METRIC_FIELDS = [
     "memory_used_percent",
     "disk_read_mbps",
     "disk_write_mbps",
+    "gpu_sampled",
     "gpu_temp_c",
     "gpu_util_percent",
     "gpu_memory_used_mb",

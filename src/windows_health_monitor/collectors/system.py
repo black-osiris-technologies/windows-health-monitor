@@ -2,9 +2,11 @@ from __future__ import annotations
 
 import ctypes
 import ctypes.wintypes
+import os
 import subprocess
 import time
 from dataclasses import dataclass
+from pathlib import Path
 
 
 class MEMORYSTATUSEX(ctypes.Structure):
@@ -85,9 +87,12 @@ def collect_available_memory_mb() -> int:
 
 
 def collect_disk_io_mbps() -> dict[str, float | None]:
+    windows_dir = Path(os.environ.get("SystemRoot", r"C:\Windows"))
+    powershell = windows_dir / "System32" / "WindowsPowerShell" / "v1.0" / "powershell.exe"
     command = [
-        "powershell.exe",
+        str(powershell),
         "-NoProfile",
+        "-NonInteractive",
         "-Command",
         (
             "$d=Get-CimInstance Win32_PerfFormattedData_PerfDisk_PhysicalDisk | "
