@@ -4,6 +4,25 @@ All notable changes are documented here using [Keep a Changelog](https://keepach
 
 ## [Unreleased]
 
+### Added
+
+- Durable Windows System event cursors and restart lookback capture.
+- Crash-dump and live-kernel-report inventory with optional retained `MEMORY.DMP` archives.
+- Atomic heartbeat status, runtime error logging, and collector-loop recovery.
+- Elevated Scheduled Task installer, status command, and safe uninstaller for automatic startup.
+- Independent GPU sampling intervals for lower overhead on hybrid-graphics laptops.
+
+### Changed
+
+- Background upgrades now stage code, stop the existing task, replace the package, and verify
+  the newly registered task is running before returning.
+- Windows event collection now imports the built-in diagnostics module by an explicit system path
+  so constrained background environments do not silently lose event data.
+- Status output now includes the installed monitor version, hexadecimal Task Scheduler result,
+  and heartbeat age.
+- Added operator and crash-investigation documentation for unattended deployments.
+- CI now parses all Windows PowerShell scripts in addition to Python tests, lint, and builds.
+
 ## [0.2.0] - 2026-07-12
 
 ### Changed
