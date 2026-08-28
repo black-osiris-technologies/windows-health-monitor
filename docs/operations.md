@@ -22,6 +22,10 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass `
   -File .\scripts\windows\install-monitor-task.ps1
 ```
 
+The interactive installer prints numbered progress messages while it validates the environment,
+stages the package, replaces an existing task, and verifies startup. These messages apply only to
+manual installation and upgrades; the installed monitor remains hidden and non-interactive.
+
 The default installation registers a Scheduled Task named `Windows Health Monitor` with these
 operational settings:
 
